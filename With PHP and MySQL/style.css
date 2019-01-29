@@ -1,0 +1,28 @@
+
+h1, h2 {
+  text-align: center;
+}
+
+img {
+  height: 300px;
+}
+
+div {
+  text-align: center;
+  padding: 10px;
+}
+
+input {
+  margin: 5px;
+}
+
+.correct {
+  border-color: green;
+}
+
+.wrong {
+  border-color: red;
+}
+.right {
+padding-left: 30px;
+}
