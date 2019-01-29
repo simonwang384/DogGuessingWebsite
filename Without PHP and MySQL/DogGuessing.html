@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flashcard</title>
+	<script type="text/javascript">
+		var randomImage = [
+			"http://cdn3-www.dogtime.com/assets/uploads/gallery/german-shepherd-dog-breed-pictures/laying-1.jpg", 
+			"http://cdn2-www.dogtime.com/assets/uploads/gallery/labrador-retriever-dog-breed-pictures/labrador-retriever-dog-pictures-6.jpg",
+			"https://vetstreet-brightspot.s3.amazonaws.com/93/c9f130a7fb11e0a0d50050568d634f/file/Rottweiler-1-645mk062811.jpg",
+			"http://cdn2-www.dogtime.com/assets/uploads/gallery/beagle-dog-breed-pictures/1-runforward.jpg",
+			"http://cdn3-www.dogtime.com/assets/uploads/gallery/bulldog-dog-breed-pictures/1-threequartersitting.jpg",
+			"http://cdn2-www.dogtime.com/assets/uploads/gallery/golden-retriever-dogs-and-puppies/golden-retriever-dogs-puppies-6.jpg",
+			"https://vetstreet.brightspotcdn.com/dims4/default/ee6ccde/2147483647/thumbnail/645x380/quality/90/?url=https%3A%2F%2Fvetstreet-brightspot.s3.amazonaws.com%2F5b%2F52%2F49deed4f440ea965d0ff16fca655%2Fgreat-dane-AP-PFYPXJ-645sm12913.jpg",
+			"http://cdn2-www.dogtime.com/assets/uploads/gallery/poodle-dog-breed-pictures/threequarters-4.jpg",
+			"https://vetstreet.brightspotcdn.com/dims4/default/777afb9/2147483647/crop/0x0%2B0%2B0/resize/645x380/quality/90/?url=https%3A%2F%2Fvetstreet-brightspot.s3.amazonaws.com%2Fcf%2Ff283009e8911e0a2380050568d634f%2Ffile%2FDoberman-2-645mk062111.jpg",
+			"https://www.petful.com/wp-content/uploads/2016/12/Dachshund-2.jpg",
+			"http://cdn3-www.dogtime.com/assets/uploads/gallery/siberian-husky-dog-breed-pictures/siberian-husky-dog-breed-pictures-5.jpg",
+			"http://cdn3-www.dogtime.com/assets/uploads/gallery/pit-bull-dog-breed-pictures/pit-bull-dog-breed-picture-1.jpg",
+			"http://cdn3-www.dogtime.com/assets/uploads/gallery/boxer-dogs-and-puppies/boxer-dogs-puppies-4.jpg",
+			"https://www.k9rl.com/wp-content/uploads/2016/07/Mastiff-breeds-Old-English-Mastiff-photo.jpg",
+			"http://cdn1-www.dogtime.com/assets/uploads/gallery/chihuahua-dog-breed-pictures/10-face.jpg",
+			"http://cdn3-www.dogtime.com/assets/uploads/gallery/yorkshireterrier-dog-breed-pictures/8-fly.jpg",
+			"http://cdn2-www.dogtime.com/assets/uploads/gallery/shih-tzu-dog-breed-pictures/shih-tzu-breed-picture-8.jpg",
+			"http://cdn2-www.dogtime.com/assets/uploads/gallery/austalian-shepherd-dog-breed-pictures/10-threequarters.jpg",
+			"http://cdn1-www.dogtime.com/assets/uploads/gallery/maltese-dog-breed-picture/3-grasstongue.jpg",
+			"http://cdn3-www.dogtime.com/assets/uploads/gallery/pomeranian-dog-breed-pictures/1-layingforward.jpg",
+			"http://cdn3-www.dogtime.com/assets/uploads/gallery/pekingese-dog-breed-pictures/3-sidestand.jpg",
+			];
+
+		var description = [
+			"German Shepherd", 
+			"Labrador Retriever", 
+			"Rottweiler",
+			"Beagle",
+			"Bulldog",
+			"Golden Retriever",
+			"Great Dane",
+			"Poodle",
+			"Doberman Pinscher",
+			"Dachshund",
+			"Siberian Husky",
+			"Pit Bull",
+			"Boxer",
+			"English Mastiff",
+			"Chihuahua",
+			"Yorkshire Terrier",
+			"Shih Tzu",
+			"Australian Shepherd",
+			"Maltese",
+			"Pomeranian",
+			"Pekingese"
+			];
+
+		var questionCounter = 1;
+		var correctCounter = 0;
+		var wrongCounter = 0;
+		// firstTimse used so user can only choose a answer once
+		var firstTime = true;
+		var arrLen = randomImage.length;
+		
+		var usedImages = [];
+
+
+		function next() {
+			// Displays the counters
+			document.getElementById("display1").innerHTML = "Question Counter: " + questionCounter;
+			document.getElementById("display2").innerHTML = "Correct Answer Counter: " + correctCounter;
+			document.getElementById("display3").innerHTML = "Wrong Answer Counter: " + wrongCounter;
+
+			// Hides the next button on the last question so you don't go over
+			if(questionCounter == arrLen) {
+				document.getElementById("next").style.visibility = "hidden";
+				document.getElementById("lastQuestion").innerHTML = "This is the Last Question!";
+			}
+
+			var answer = Math.floor(Math.random() * randomImage.length);
+			// checks to see if index of the usedImages where answer is undefined
+			// Used this if statement for no repeats in the images/questions
+			if(usedImages[answer] == undefined) {
+				questionCounter++;
+				document.getElementById("randomImage").src = randomImage[answer];
+				document.getElementById("randomImage").alt = description[answer];
+				var choiceOne = Math.floor(Math.random() * description.length);
+				var choiceTwo = Math.floor(Math.random() * description.length);
+				var choiceThree = Math.floor(Math.random() * description.length);
+				
+
+				// While loops here to check that the values of the buttons don't repeat.
+				// If they do repeat randomize again.
+				while(choiceOne == answer || choiceOne == choiceTwo || choiceOne == choiceThree)
+					choiceOne = Math.floor(Math.random() * description.length);
+				while(choiceTwo == answer || choiceTwo == choiceOne || choiceTwo == choiceThree)
+					choiceTwo = Math.floor(Math.random() * description.length);
+				while(choiceThree == answer || choiceThree == choiceOne || choiceThree == choiceTwo)
+					choiceThree = Math.floor(Math.random() * description.length);
+
+				var values = ["","","",""];
+				var options = [description[answer], description[choiceOne], description[choiceTwo], description[choiceThree]]; 
+
+				shuffleBtnValues(options,values);
+
+				document.getElementById("Answer1").value = values[0];
+				document.getElementById("Answer2").value = values[1];
+				document.getElementById("Answer3").value = values[2];
+				document.getElementById("Answer4").value = values[3];
+
+				// Reset Button Color if pressed checked answer
+				resetButtonColor();
+
+				// Set firstTime back to true when next is pressed
+				firstTime = true;
+				// Sets the index of the usedImages where answer to true
+				usedImages[answer] = true;
+
+			} else {
+				next();
+			}
+
+		} 
+
+		function resetButtonColor(){
+				document.getElementById("Answer1").style.cssText = "background:221,221,221";
+				document.getElementById("Answer2").style.cssText = "background:221,221,221";
+				document.getElementById("Answer3").style.cssText = "background:221,221,221";
+				document.getElementById("Answer4").style.cssText = "background:221,221,221";
+		}
+
+		function shuffleBtnValues(array1,array2) {
+			var currentIndex = array1.length;
+			while (currentIndex >= 0) {
+				var randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex--;
+				var tempValue = array1[currentIndex];
+				array2[currentIndex] = array1[randomIndex];
+				array1[randomIndex] = tempValue;
+			}
+			return array2;
+		}
+
+		function correctAns() {
+			// asking for the correct answer should not let you be able to answer
+			firstTime = false;
+			alert("Answer is highlighted in yellow");
+			var alt = document.getElementById("randomImage").alt;
+			var value1 = document.getElementById("Answer1").value;
+			var value2 = document.getElementById("Answer2").value;
+			var value3 = document.getElementById("Answer3").value;
+			var value4 = document.getElementById("Answer4").value;
+			if (value1 == alt) {
+				document.getElementById("Answer1").style.cssText = "background:yellow";
+			} else if (value2 == alt) {
+				document.getElementById("Answer2").style.cssText = "background:yellow";
+			} else if (value3 == alt) {
+				document.getElementById("Answer3").style.cssText = "background:yellow";
+			} else if (value4 == alt) {
+				document.getElementById("Answer4").style.cssText = "background:yellow";
+			}
+		}
+
+		window.addEventListener("load",next,false);
+
+		window.onload=function(){
+			var Answer1 = document.getElementById("Answer1");
+			Answer1.onclick = function() {
+				var alt = document.getElementById("randomImage").alt;
+				var value1 = document.getElementById("Answer1").value;
+				if(firstTime == true) {
+					if (alt == value1) { 
+						correctCounter++;
+						alert("You got it right! Move onto the next question");
+					} else {
+						wrongCounter++;
+						alert("Wrong");
+					}
+					firstTime = false;
+				}
+				document.getElementById("display2").innerHTML = "Correct Answer Counter: " + correctCounter;
+				document.getElementById("display3").innerHTML = "Wrong Answer Counter: " + wrongCounter;
+			}
+
+			// Check if button two matches the answer
+			var Answer2 = document.getElementById("Answer2");
+			Answer2.onclick = function() {
+				var alt = document.getElementById("randomImage").alt;
+				var value2 = document.getElementById("Answer2").value;
+				if(firstTime == true) {
+					if (alt == value2) {
+						correctCounter++;
+						alert("You got it right! Move onto the next question");
+					} else {
+						wrongCounter++;
+						alert("Wrong");
+					}
+				firstTime = false;
+				}
+				document.getElementById("display2").innerHTML = "Correct Answer Counter: " + correctCounter;
+				document.getElementById("display3").innerHTML = "Wrong Answer Counter: " + wrongCounter;
+			}
+	
+			// Check if button three matches the answer
+			var Answer3 = document.getElementById("Answer3");
+			Answer3.onclick = function() {
+				var alt = document.getElementById("randomImage").alt;
+				var value3 = document.getElementById("Answer3").value;
+				if(firstTime == true) {
+					if (alt == value3) {
+						correctCounter++;
+						alert("You got it right! Move onto the next question");
+					} else {
+						wrongCounter++;
+						alert("Wrong");
+					}
+				firstTime = false;
+				}
+				document.getElementById("display2").innerHTML = "Correct Answer Counter: " + correctCounter;
+				document.getElementById("display3").innerHTML = "Wrong Answer Counter: " + wrongCounter;
+			}
+
+			// Check if button four matches the answer
+			var Answer4 = document.getElementById("Answer4");
+			Answer4.onclick = function() {
+				var alt = document.getElementById("randomImage").alt;
+				var value4 = document.getElementById("Answer4").value;
+				if(firstTime == true) {
+					if (alt == value4) {
+						correctCounter++;
+						alert("You got it right! Move onto the next question");
+					} else {
+						wrongCounter++;
+						alert("Wrong");
+					}
+				firstTime = false;
+				}
+				document.getElementById("display2").innerHTML = "Correct Answer Counter: " + correctCounter;
+				document.getElementById("display3").innerHTML = "Wrong Answer Counter: " + wrongCounter;
+			}
+		
+		}
+		
+	</script>
+
+	<style type="text/css">
+		.Answers {
+			text-align: center;
+			width: 100%;
+		}
+		#lastQuestion {
+			text-align: center;
+		}
+		#randomImage {
+			margin-top: 0px;
+			width: 30%;
+		}
+		h1 {
+			text-align: center;
+		}
+		.image {
+			display: block;
+			text-align: center;
+		}
+		.right {
+			padding-left: 30px;
+		}
+	</style>
+
+</head>
+<body>
+	<h1>Dog Flashcards</h1>
+	<hr>
+
+	<div class="image">
+		<img id="randomImage" src="" alt = "">
+		<p id="display1"></p>
+		<span id="display2"></span>
+		<span class = "right" id="display3"></span>
+	</div>
+	<br>
+
+	<div class = "Answers">
+		<input id = "Answer1" type="button" value="">
+		<input id = "Answer2" type="button" value="">
+		<input id = "Answer3" type="button" value="">
+		<input id = "Answer4" type="button" value="">
+	</div>
+	<br>
+
+	<center><input type="button" id ="correctAns" onclick="correctAns()" value="Correct Answer"></center>
+	<center><div id="CorrectAnswer"></div></center>
+	<br>
+
+	<center><input type="button" id="next" onclick="next()" value="Next"></center>
+	<h3 id="lastQuestion"></h3>
+	<hr>
+	<footer>Created by _________</footer>
+</body>
+</html>
